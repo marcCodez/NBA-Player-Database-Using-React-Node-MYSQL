@@ -10,7 +10,7 @@ const db = mysql.createPool({
 });
 
 app.get('/', (req, res) => {
-  
+    
    
 });
 
