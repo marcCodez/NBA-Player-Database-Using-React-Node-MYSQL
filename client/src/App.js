@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button} from 'react-bootstrap';
+import { Route, Link, BrowserRouter, Switch } from 'react-router-dom';
 
 function App() {
 
@@ -13,13 +14,13 @@ function App() {
   const [playerList, setPlayerList] = useState([])
 
   useEffect(() => {
-    axios.get('http://localhost:3001/nbadb/get').then((response) => {
+    axios.get('http://localhost:3001/get').then((response) => {
     setPlayerList(response.data)
     })
   })
 
   const submitPlayer = () => {
-    axios.post('http://localhost:3001/nbadb/insert', {
+    axios.post('http://localhost:3001/insert', {
       firstName: firstName, 
       lastName: lastName, 
       age: age, 
@@ -36,12 +37,15 @@ function App() {
   }
 
   const deletePlayer = (id) => {
-    axios.delete('http://localhost:3001/nbadb/delete/', () => {
-
+    axios.delete(`http://localhost:3001/delete/${id}`).then((response) => {
+    setPlayerList(playerList.filter((player) => {
+      return player.id !== id
+    }))
     })
   }
 
   return (
+    <BrowserRouter>
     <div className="App">
     <h1>NBA Player Database</h1>
 
@@ -82,7 +86,7 @@ function App() {
           <td>{player.height}</td>
           <td> {player.position}</td>
           <td>
-            <Button variant="secondary">Update</Button>
+            <Link variant="secondary" to={`/player/${player.id}`}>View</Link>
           </td>
           <td>
           <Button variant="danger" onClick={() => {deletePlayer(player.id)}}>Delete</Button>
@@ -95,6 +99,8 @@ function App() {
     </Table>
     </div>
     </div>
+
+    </BrowserRouter>
   );
 }
 

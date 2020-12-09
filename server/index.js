@@ -15,7 +15,7 @@ app.use(cors())
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
-app.get('/nbadb/get', (req, res) => {
+app.get('/get', (req, res) => {
 
     const sql = "SELECT * FROM nba_players"
    db.query(sql, (err, result) => {
@@ -30,7 +30,7 @@ app.get('/nbadb/get', (req, res) => {
 });
 
 
-app.post('/nbadb/insert', (req, res) => {
+app.post('/insert', (req, res) => {
     const { firstName, lastName, age, height, position } = req.body
  
     const sql = "INSERT INTO nba_players (first_name, last_name, age, height, position) VALUES (?,?,?,?,?)"
@@ -43,6 +43,24 @@ app.post('/nbadb/insert', (req, res) => {
    
    });
 });
+
+app.put('/update', () => {
+    const id = req.body.id
+    const sql = "UPDATE SET nba_players"
+    db.query()
+})
+
+app.delete('/delete/:id', (req, res) => {
+    const id = req.params.id
+    const sql = "DELETE FROM nba_players WHERE id = ?"
+    db.query(sql, id, (err, result) => {
+        if (err) {
+            console.log(err)
+        } else {
+            res.send(result)
+        }
+    })
+})
 
 app.listen(3001, () => {
     console.log('Server is up on port 3001');
