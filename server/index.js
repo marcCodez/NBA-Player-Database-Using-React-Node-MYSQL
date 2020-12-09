@@ -4,7 +4,7 @@ const cors = require('cors')
 const app = express();
 const mysql = require('mysql');
 
-const db = mysql.createPool({
+const db = mysql.createConnection({
    host: 'localhost',
    user: 'root',
    password: 'password',
@@ -19,7 +19,13 @@ app.get('/nbadb/get', (req, res) => {
 
     const sql = "SELECT * FROM nba_players"
    db.query(sql, (err, result) => {
-    res.send(result)
+
+    if (err){
+        console.log(err)
+    } else {
+        res.send(result)
+    }
+   
    });
 });
 
@@ -29,7 +35,12 @@ app.post('/nbadb/insert', (req, res) => {
  
     const sql = "INSERT INTO nba_players (first_name, last_name, age, height, position) VALUES (?,?,?,?,?)"
    db.query(sql, [firstName, lastName, age, height, position], (err, result) => {
-    console.log(result)
+       if (err){
+           console.log(err)
+       } else {
+        res.send('player added sucessfully')
+       }
+   
    });
 });
 
