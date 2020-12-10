@@ -3,6 +3,7 @@ import './App.css';
 import axios from 'axios';
 import { Table, Button} from 'react-bootstrap';
 import { Route, Link, BrowserRouter, Switch } from 'react-router-dom';
+import PlayerDetails from '../components/PlayerDetails'
 
 function App() {
 
@@ -47,6 +48,8 @@ function App() {
   return (
     <BrowserRouter>
     <div className="App">
+      <Switch>
+        <Route exact path ="/">
     <h1>NBA Player Database</h1>
 
     <div className="form">
@@ -62,6 +65,7 @@ function App() {
     <input type="text" onChange={(e) => setPosition(e.target.value)}/>
 
     <button onClick={submitPlayer}>Submit</button>
+    </div>
   
   <Table striped bordered hover>
     <thead>
@@ -97,7 +101,10 @@ function App() {
       
     </tbody>
     </Table>
-    </div>
+
+    </Route>
+    <Route exact path="/player/:id" component={playerDetails} />
+    </Switch>
     </div>
 
     </BrowserRouter>

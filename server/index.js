@@ -29,6 +29,18 @@ app.get('/get', (req, res) => {
    });
 });
 
+app.get('/player/:id', (req, res) => {
+    const id = req.params.id
+    const sql = "SELECT FROM nba_players WHERE id = ?"
+    db.query(sql, id, (err, result) => {
+        if (err) {
+            console.log(error)
+        } else {
+            res.send(result)
+        }
+    })
+})
+
 
 app.post('/insert', (req, res) => {
     const { firstName, lastName, age, height, position } = req.body
