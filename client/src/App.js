@@ -3,7 +3,7 @@ import './App.css';
 import axios from 'axios';
 import { Table, Button} from 'react-bootstrap';
 import { Route, Link, BrowserRouter, Switch } from 'react-router-dom';
-import PlayerDetails from '../components/PlayerDetails'
+import PlayerDetails from './components/PlayerDetails'
 
 function App() {
 
@@ -20,8 +20,8 @@ function App() {
     })
   })
 
-  const submitPlayer = () => {
-    axios.post('http://localhost:3001/insert', {
+  const submitPlayer = async () => {
+   await axios.post('http://localhost:3001/insert', {
       firstName: firstName, 
       lastName: lastName, 
       age: age, 
@@ -37,8 +37,8 @@ function App() {
       
   }
 
-  const deletePlayer = (id) => {
-    axios.delete(`http://localhost:3001/delete/${id}`).then((response) => {
+  const deletePlayer = async (id) => {
+   await axios.delete(`http://localhost:3001/delete/${id}`).then((response) => {
     setPlayerList(playerList.filter((player) => {
       return player.id !== id
     }))
@@ -81,9 +81,9 @@ function App() {
     </thead>
     <tbody>
      
-        {playerList.map((player, key) => {
+        {playerList.map((player) => {
           return (
-            <tr>
+            <tr key={player.id}>
          <td> {player.first_name}</td>
           <td>{player.last_name}</td>
           <td>{player.age}</td>
@@ -103,7 +103,7 @@ function App() {
     </Table>
 
     </Route>
-    <Route exact path="/player/:id" component={playerDetails} />
+    <Route exact path="/player/:id" component={PlayerDetails} />
     </Switch>
     </div>
 
