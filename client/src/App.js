@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Table, Button} from 'react-bootstrap';
 import { Route, Link, BrowserRouter, Switch } from 'react-router-dom';
 import PlayerDetails from './components/PlayerDetails';
+import LoadingScreen from './components/LoadingScreen'
 
 function App() {
 
@@ -14,13 +15,22 @@ function App() {
   const [position, setPosition] = useState('')
   const [playerList, setPlayerList] = useState([])
 
+  const [isLoading, setIsLoading] = useState(true);
+
+
+
   useEffect(() => {
+    setTimeout(() => {
+        setIsLoading(false)
+    }, 1000);
     axios.get('http://localhost:3001/get').then((response) => {
     setPlayerList(response.data)
     });
   }, [])
 
+
   const submitPlayer = async () => {
+    setIsLoading(true)
    await axios.post('http://localhost:3001/insert', {
       firstName: firstName, 
       lastName: lastName, 
@@ -50,6 +60,7 @@ function App() {
     <div className="App">
       <Switch>
         <Route exact path ="/">
+
     <h1>NBA Player Database</h1>
 
     <div className="form">
@@ -80,24 +91,31 @@ function App() {
       </tr>
     </thead>
     <tbody>
+
+      {isLoading === true ? <LoadingScreen/> : 
+      
+      playerList.map((player) => {
+        return (
+          <tr key={player.id}>
+       <td> {player.first_name}</td>
+        <td>{player.last_name}</td>
+        <td>{player.age}</td>
+        <td>{player.height}</td>
+        <td> {player.position}</td>
+        <td>
+          <Link variant="secondary" to={`/player/${player.id}`}>View</Link>
+        </td>
+        <td>
+        <Button variant="danger" onClick={() => {deletePlayer(player.id)}}>Delete</Button>
+        </td>
+        </tr>
+        );
+      })
+      
+      
+      }
      
-        {playerList.map((player) => {
-          return (
-            <tr key={player.id}>
-         <td> {player.first_name}</td>
-          <td>{player.last_name}</td>
-          <td>{player.age}</td>
-          <td>{player.height}</td>
-          <td> {player.position}</td>
-          <td>
-            <Link variant="secondary" to={`/player/${player.id}`}>View</Link>
-          </td>
-          <td>
-          <Button variant="danger" onClick={() => {deletePlayer(player.id)}}>Delete</Button>
-          </td>
-          </tr>
-          );
-        })}
+       
       
     </tbody>
     </Table>

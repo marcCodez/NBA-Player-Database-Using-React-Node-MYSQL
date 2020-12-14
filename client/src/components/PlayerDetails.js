@@ -10,7 +10,10 @@ const [playerDetails, setPlayerDetails] = useState({
     age: 0,
     height: 0,
     position: ''
-})
+});
+
+
+const {first_name, last_name, age, height, position} = playerDetails;
 
 
 const { id } = useParams();
@@ -20,7 +23,6 @@ useEffect(() => {
 
 const loadPlayer = async () => {
     const res = await axios.get(`http://localhost:3001/player/${id}`);
-   console.log(res)
     if (res.data[0]) {
         const {first_name, last_name, age, height, position} = res.data[0]
         setPlayerDetails({
@@ -35,12 +37,12 @@ const loadPlayer = async () => {
 }
 
 
-console.log('this is player details', playerDetails)
-
-
     return (
         <div>
-            
+       
+            <h1>{first_name}</h1>
+            <h1>{last_name}</h1>
+            <h1></h1>
         </div>
     );
 };
