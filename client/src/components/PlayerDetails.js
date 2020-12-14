@@ -16,27 +16,26 @@ const [playerDetails, setPlayerDetails] = useState({
 const { id } = useParams();
 useEffect(() => {
     loadPlayer();
-   
 }, []);
 
 const loadPlayer = async () => {
-    // const res = await axios.get(`http://localhost:3001/player/${id}`);
-//    console.log(res)
-    // if (res.data[0]) {
-    //     const {first_name, last_name, age, height, position} = res.data[0]
-    //     setPlayerDetails({
-    //         first_name,
-    //         last_name, 
-    //         age, 
-    //         height,
-    //         position
-    //     })
-    // }
+    const res = await axios.get(`http://localhost:3001/player/${id}`);
+   console.log(res)
+    if (res.data[0]) {
+        const {first_name, last_name, age, height, position} = res.data[0]
+        setPlayerDetails({
+            first_name,
+            last_name, 
+            age, 
+            height,
+            position
+        })
+    }
 
 }
 
 
-
+console.log('this is player details', playerDetails)
 
 
     return (

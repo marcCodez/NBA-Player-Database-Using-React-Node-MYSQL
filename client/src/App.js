@@ -3,7 +3,7 @@ import './App.css';
 import axios from 'axios';
 import { Table, Button} from 'react-bootstrap';
 import { Route, Link, BrowserRouter, Switch } from 'react-router-dom';
-import PlayerDetails from './components/PlayerDetails'
+import PlayerDetails from './components/PlayerDetails';
 
 function App() {
 
@@ -17,8 +17,8 @@ function App() {
   useEffect(() => {
     axios.get('http://localhost:3001/get').then((response) => {
     setPlayerList(response.data)
-    })
-  })
+    });
+  }, [])
 
   const submitPlayer = async () => {
    await axios.post('http://localhost:3001/insert', {
