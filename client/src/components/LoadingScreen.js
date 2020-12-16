@@ -8,6 +8,7 @@ const LoadingScreen = () => {
         <tr>
             <td colspan={7}>
             <img src="/media/bball.gif" className="bball" alt="spinning-ball"/>
+            <h3>Loading...</h3>
             </td>
             
         </tr>

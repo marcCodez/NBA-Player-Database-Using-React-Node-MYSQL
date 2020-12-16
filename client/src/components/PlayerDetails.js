@@ -18,6 +18,7 @@ const {first_name, last_name, age, height, position} = playerDetails;
 
 const { id } = useParams();
 useEffect(() => {
+    
     loadPlayer();
 }, []);
 

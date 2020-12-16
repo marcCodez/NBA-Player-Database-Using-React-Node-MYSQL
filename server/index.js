@@ -2,7 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express();
+const fileUpload = require('express-fileupload')
 const mysql = require('mysql');
+var uuid = require('uuid');
 
 const db = mysql.createConnection({
    host: 'localhost',
@@ -14,6 +16,7 @@ const db = mysql.createConnection({
 app.use(cors())
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(fileUpload())
 
 app.get('/get', (req, res) => {
 
@@ -28,6 +31,8 @@ app.get('/get', (req, res) => {
    
    });
 });
+
+// ROUTES
 
 app.get('/player/:id', (req, res) => {
     const id = req.params.id
@@ -67,11 +72,28 @@ app.delete('/delete/:id', (req, res) => {
     const sql = "DELETE FROM nba_players WHERE id = ?"
     db.query(sql, id, (err, result) => {
         if (err) {
-            console.log(err)
+            console.log(err)()
         } else {
             res.send(result)
         }
     })
+})
+
+
+app.post('/uploadImage', (req, res) => {
+    if (!req.files) {
+        res.send('No file upload')
+    } else {
+        var file = req.files.image
+        if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png' || file.mimetype == 'image/gif') {
+            var imageName = file.name
+            console.log(imageName)
+            var uuidname = uuid.v1();
+
+            var imgsrc = 'http://127.0.0.1:3001/images/' + uuidname + file.name
+        }
+    }
+
 })
 
 app.listen(3001, () => {
