@@ -18,6 +18,8 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(fileUpload())
 
+app.use(express.static("./public"))
+
 app.get('/get', (req, res) => {
 
     const sql = "SELECT * FROM nba_players"
@@ -74,25 +76,44 @@ app.delete('/delete/:id', (req, res) => {
         if (err) {
             console.log(err)()
         } else {
-            res.send(result)
+           return res.send(result)
         }
     })
 })
 
 
 app.post('/uploadImage', (req, res) => {
-    if (!req.files) {
-        res.send('No file upload')
-    } else {
-        var file = req.files.image
-        if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png' || file.mimetype == 'image/gif') {
-            var imageName = file.name
-            console.log(imageName)
-            var uuidname = uuid.v1();
+    if (req.files === null) {
+        return res.status(400).json({msg: 'No file uploaded'})
+    } 
 
-            var imgsrc = 'http://127.0.0.1:3001/images/' + uuidname + file.name
+    const file = req.files.image;
+
+    file.mv(`${__dirname}/client/public/images/${file.name}`, err => {
+        if(err) {
+            console.error(err);
+            return res.status(500).send(err)
         }
-    }
+
+        res.json({ fileName: file.name, fileParth: `/uploads/${file.name}`});
+    })
+
+
+        // var file = req.files.image
+        // if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png' || file.mimetype == 'image/gif') {
+        //     var imageName = file.name
+        //     console.log(imageName)
+        //     var uuidname = uuid.v1();
+
+        //     var imgsrc = 'http://127.0.0.1:3001/images/' + uuidname + file.name
+        //     var sql = "INSERT INTO nba_players(img)VALUES(?)"
+        //     db.query(sql, [imgsrc], (err, result) => {
+        //         if (err) throw err
+        //              file.mv('public/images/' + uuidname + file.name)
+        //             res.send("Data successfully save")
+        //     })
+        // }
+    
 
 })
 

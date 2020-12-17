@@ -8,12 +8,15 @@ import LoadingScreen from './components/LoadingScreen'
 
 function App() {
 
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [age, setAge] = useState(0)
-  const [height, setHeight] = useState(0)
-  const [position, setPosition] = useState('')
-  const [playerList, setPlayerList] = useState([])
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [age, setAge] = useState(0);
+  const [height, setHeight] = useState(0);
+  const [position, setPosition] = useState('');
+  const [playerList, setPlayerList] = useState([]);
+  const [file, setFile] = useState('');
+  const [fileName, setFilename] = useState('Choose File');
+  const [uploadedFile, setUploadedFile] = useState({});
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -31,18 +34,33 @@ function App() {
 
   const submitPlayer = async () => {
     setIsLoading(true)
-   await axios.post('http://localhost:3001/insert', {
-      firstName: firstName, 
-      lastName: lastName, 
-      age: age, 
-      height: height, 
-      position: position
-    }).then(() => {
-      setPlayerList([
-        ...playerList,
-        {firstName: firstName, lastName: lastName, age: age, height: height, position: position }
-      ])
-    })
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await axios.post('http://localhost:3001/insert', formData, {
+        headers: {
+          'Content-type': 'multipart/form-data'
+        },
+         firstName: firstName, 
+         lastName: lastName, 
+         age: age, 
+         height: height, 
+         position: position,
+         fileName: fileName,
+       });
+
+       const { fileName, filePath } = res.data;
+         setPlayerList([
+           ...playerList,
+           {firstName: firstName, lastName: lastName, age: age, height: height, position: position }
+         ])
+       
+
+    } catch (err) {
+
+    }
+ 
 
       
   }
@@ -53,6 +71,11 @@ function App() {
       return player.id !== id
     }))
     })
+  }
+
+  const onChange = e => {
+    setFile(e.target.files[0]);
+    setFilename(e.target.files[0].name)
   }
 
   return (
@@ -74,7 +97,10 @@ function App() {
     <input type="number" onChange={(e) => setHeight(e.target.value)}/>
     <label>Position:</label> 
     <input type="text" onChange={(e) => setPosition(e.target.value)}/>
-
+    <div class="custom-file">
+  <input type="file" class="custom-file-input" id="customFile" onChange={onChange}/>
+  <label class="custom-file-label" htmlFor="customFile">{filename}</label>
+</div>
     <button onClick={submitPlayer}>Submit</button>
     </div>
   
