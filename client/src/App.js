@@ -18,47 +18,58 @@ function App() {
   const [fileName, setFilename] = useState('Choose File');
   const [uploadedFile, setUploadedFile] = useState({});
 
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
 
 
   useEffect(() => {
-    setTimeout(() => {
-        setIsLoading(false)
-    }, 1000);
+    // setTimeout(() => {
+    //     setIsLoading(false)
+    // }, 1000);
     axios.get('http://localhost:3001/get').then((response) => {
     setPlayerList(response.data)
     });
   }, [])
 
 
-  const submitPlayer = async () => {
-    setIsLoading(true)
+  const submitPlayer = async (e) => {
+    e.preventDefault();
+    // setIsLoading(true)
     const formData = new FormData();
     formData.append('file', file);
 
     try {
-      const res = await axios.post('http://localhost:3001/insert', formData, {
-        headers: {
-          'Content-type': 'multipart/form-data'
-        },
+       await axios.post('http://localhost:3001/insert', {
          firstName: firstName, 
          lastName: lastName, 
          age: age, 
          height: height, 
-         position: position,
-         fileName: fileName,
+         position: position
        });
 
-       const { fileName, filePath } = res.data;
+       const res2 = await axios.post('http://localhost:3001/uploadImage', formData, {
+         headers: {
+           'Content-Type': 'multipart/form-data'
+         }
+       });
+
+       const { fileName, filePath } = res2.data;
+
+       setUploadedFile({ fileName, filePath});
+     
+
          setPlayerList([
            ...playerList,
-           {firstName: firstName, lastName: lastName, age: age, height: height, position: position }
+           {firstName: firstName, lastName: lastName, age: age, height: height, position: position, fileName: fileName }
          ])
        
 
     } catch (err) {
-
+      if(err.response.status === 500) {
+        console.log('There was a problem with the server')
+      } else {
+        console.log(err.response.data.msg);
+      }
     }
  
 
@@ -86,7 +97,7 @@ function App() {
 
     <h1>NBA Player Database</h1>
 
-    <div className="form">
+    <form onSubmit={submitPlayer}>
     <label>First Name: </label>
     <input type="text" onChange={(e) => setFirstName(e.target.value)}/>
     <label>Last Name: </label>
@@ -97,12 +108,12 @@ function App() {
     <input type="number" onChange={(e) => setHeight(e.target.value)}/>
     <label>Position:</label> 
     <input type="text" onChange={(e) => setPosition(e.target.value)}/>
-    <div class="custom-file">
-  <input type="file" class="custom-file-input" id="customFile" onChange={onChange}/>
-  <label class="custom-file-label" htmlFor="customFile">{filename}</label>
+    <div className="custom-file">
+  <input type="file" className="custom-file-input" id="customFile" onChange={onChange}/>
+  <label className="custom-file-label" htmlFor="customFile">{fileName}</label>
 </div>
-    <button onClick={submitPlayer}>Submit</button>
-    </div>
+    <input type="submit" value="Submit"/>
+    </form>
   
   <Table striped bordered hover>
     <thead>
@@ -118,9 +129,9 @@ function App() {
     </thead>
     <tbody>
 
-      {isLoading === true ? <LoadingScreen/> : 
+      {/* {isLoading === true ? <LoadingScreen/> :  */}
       
-      playerList.map((player) => {
+     { playerList.map((player) => {
         return (
           <tr key={player.id}>
        <td> {player.first_name}</td>
@@ -137,9 +148,10 @@ function App() {
         </tr>
         );
       })
+    }
       
       
-      }
+       {/* } */}
      
        
       
