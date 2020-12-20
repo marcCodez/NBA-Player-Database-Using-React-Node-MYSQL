@@ -50,10 +50,10 @@ app.get('/player/:id', (req, res) => {
 
 
 app.post('/insert', (req, res) => {
-    const { firstName, lastName, age, height, position } = req.body
+    const { firstName, lastName, age, height, position, filePath} = req.body
  
-    const sql = "INSERT INTO nba_players (first_name, last_name, age, height, position) VALUES (?,?,?,?,?)"
-   db.query(sql, [firstName, lastName, age, height, position], (err, result) => {
+    const sql = "INSERT INTO nba_players (first_name, last_name, age, height, position, img) VALUES (?,?,?,?,?,?)"
+   db.query(sql, [firstName, lastName, age, height, position, filePath], (err, result) => {
        if (err){
            console.log(err)
        } else {

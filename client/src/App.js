@@ -16,16 +16,16 @@ function App() {
   const [playerList, setPlayerList] = useState([]);
   const [file, setFile] = useState('');
   const [fileName, setFilename] = useState('Choose File');
-  const [uploadedFile, setUploadedFile] = useState({});
 
-  // const [isLoading, setIsLoading] = useState(true);
+
+  const [isLoading, setIsLoading] = useState(true);
 
 
 
   useEffect(() => {
-    // setTimeout(() => {
-    //     setIsLoading(false)
-    // }, 1000);
+    setTimeout(() => {
+        setIsLoading(false)
+    }, 1000);
     axios.get('http://localhost:3001/get').then((response) => {
     setPlayerList(response.data)
     });
@@ -39,23 +39,23 @@ function App() {
     formData.append('file', file);
 
     try {
+      const res = await axios.post('http://localhost:3001/uploadImage', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      const { fileName, filePath } = res.data;
+
+
        await axios.post('http://localhost:3001/insert', {
          firstName: firstName, 
          lastName: lastName, 
          age: age, 
          height: height, 
-         position: position
+         position: position,
+         filePath: filePath
        });
-
-       const res2 = await axios.post('http://localhost:3001/uploadImage', formData, {
-         headers: {
-           'Content-Type': 'multipart/form-data'
-         }
-       });
-
-       const { fileName, filePath } = res2.data;
-
-       setUploadedFile({ fileName, filePath});
      
 
          setPlayerList([
@@ -129,9 +129,9 @@ function App() {
     </thead>
     <tbody>
 
-      {/* {isLoading === true ? <LoadingScreen/> :  */}
+       {isLoading === true ? <LoadingScreen/> :  
       
-     { playerList.map((player) => {
+      playerList.map((player) => {
         return (
           <tr key={player.id}>
        <td> {player.first_name}</td>
@@ -148,10 +148,10 @@ function App() {
         </tr>
         );
       })
-    }
+    
       
       
-       {/* } */}
+        } 
      
        
       
