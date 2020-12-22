@@ -39,6 +39,7 @@ function App() {
     formData.append('file', file);
 
     try {
+   
       const res = await axios.post('http://localhost:3001/uploadImage', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -73,7 +74,7 @@ function App() {
     }
  
 
-      
+
   }
 
   const deletePlayer = async (id) => {
@@ -157,6 +158,7 @@ function App() {
       
     </tbody>
     </Table>
+
 
     </Route>
     <Route exact path="/player/:id" component={PlayerDetails} />

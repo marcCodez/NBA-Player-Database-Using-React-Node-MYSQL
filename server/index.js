@@ -91,7 +91,7 @@ app.post('/uploadImage', (req, res) => {
 
 
 
-    file.mv(`${__dirname}/public/images/${file.name}`, err => {
+    file.mv(`../client/public/images/${file.name}`, err => {
         if(err) {
             console.error(err);
             return res.status(500).send(err)
