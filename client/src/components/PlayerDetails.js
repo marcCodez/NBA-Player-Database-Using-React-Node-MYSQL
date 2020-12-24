@@ -42,11 +42,17 @@ const loadPlayer = async () => {
 
     return (
         <div>
-       
-            <h1>{first_name}</h1>
-            <h1>{last_name}</h1>
-   
-            <img style={{ width: '100%' }} src={`../..${img}`} alt=''/>
+
+
+
+      <Card  className="mx-auto mt-3" style={{ width: '25rem' }}>
+  <Card.Img variant="top" src={`../..${img}`} />
+  <ListGroup className="list-group-flush">
+    <ListGroupItem><span className="font-weight-bold">First Name: </span>{first_name}</ListGroupItem>
+    <ListGroupItem><span className="font-weight-bold">Last Name: </span>{last_name}</ListGroupItem>
+    <ListGroupItem><span className="font-weight-bold">Age: </span>{age}</ListGroupItem>
+  </ListGroup>
+</Card>
 
             
         </div>
