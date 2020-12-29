@@ -4,18 +4,22 @@ import axios from 'axios';
 import { Table, Button} from 'react-bootstrap';
 import { Route, Link, BrowserRouter, Switch } from 'react-router-dom';
 import PlayerDetails from './components/PlayerDetails';
-import LoadingScreen from './components/LoadingScreen'
+
+import PlayerList from './components/PlayerList';
 
 function App() {
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [fullName, setFullName] = useState('')
   const [age, setAge] = useState(0);
   const [height, setHeight] = useState(0);
   const [position, setPosition] = useState('');
   const [playerList, setPlayerList] = useState([]);
   const [file, setFile] = useState('');
   const [fileName, setFilename] = useState('Choose File');
+  const [search, setSearch] = useState('');
+	const [filteredUsers, setFilteredUsers] = useState([]);
 
 
   const [isLoading, setIsLoading] = useState(true);
@@ -30,6 +34,21 @@ function App() {
     setPlayerList(response.data)
     });
   }, [])
+
+
+
+  	// filters through database names depending on the entered query
+	// useEffect(()=>{
+	// 	setFilteredUsers(
+	// 		playerList.filter( (player) => 
+	// 			player.firstName.toLowerCase().includes( search.toLowerCase() )
+	// 		)
+	// 	)
+  // }, [search, users])
+  
+  const getFullName = () => {
+    return  
+  }
 
 
   const submitPlayer = async (e) => {
@@ -115,8 +134,15 @@ function App() {
 </div>
     <input type="submit" value="Submit"/>
     </form>
+    
+    <PlayerList 
+      playerList={playerList}
+      isLoading={isLoading}
+      deletePlayer={deletePlayer}
+    />
+
   
-  <Table striped bordered hover>
+  {/* <Table striped bordered hover>
     <thead>
       <tr>
         <th>First Name</th>
@@ -157,7 +183,7 @@ function App() {
        
       
     </tbody>
-    </Table>
+    </Table> */}
 
 
     </Route>
