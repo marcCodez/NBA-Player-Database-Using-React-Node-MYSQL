@@ -49,17 +49,13 @@ function App() {
   	// filters through database names depending on the entered query
 	useEffect(()=>{
 		setFilteredUsers(
-			playerList.filter( (player) => 
-				player.first_name.toLowerCase().includes( search.toLowerCase() )
-			)
+      playerList.filter( (player) => {
+      const fullName = `${player.first_name} ${player.last_name}`
+        return fullName.toLowerCase().includes( search.toLowerCase() )
+        
+      })
 		)
   }, [search, playerList])
-
-
-  
-  // const getFullName = () => {
-  //   return  
-  // }
 
 
   const submitPlayer = async (e) => {
