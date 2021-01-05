@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
-import { Table, Button} from 'react-bootstrap';
+import { Table, Button, Navbar, Form, FormControl} from 'react-bootstrap';
 import { Route, Link, BrowserRouter, Switch } from 'react-router-dom';
 import PlayerDetails from './components/PlayerDetails';
 
@@ -30,25 +30,36 @@ function App() {
     setTimeout(() => {
         setIsLoading(false)
     }, 1000);
-    axios.get('http://localhost:3001/get').then((response) => {
-    setPlayerList(response.data)
-    });
+      fetchPlayers();
   }, [])
 
+  
+  const fetchPlayers = async () => {
+    axios
+    .get('http://localhost:3001/get')
+    .then((response) => {
+      setPlayerList(response.data)
+      })
+      .catch((error) => 
+        console.error(`There was an error retrieving the user list: ${error}`)
+      );
+  }
 
 
   	// filters through database names depending on the entered query
-	// useEffect(()=>{
-	// 	setFilteredUsers(
-	// 		playerList.filter( (player) => 
-	// 			player.firstName.toLowerCase().includes( search.toLowerCase() )
-	// 		)
-	// 	)
-  // }, [search, users])
+	useEffect(()=>{
+		setFilteredUsers(
+			playerList.filter( (player) => 
+				player.first_name.toLowerCase().includes( search.toLowerCase() )
+			)
+		)
+  }, [search, playerList])
+
+
   
-  const getFullName = () => {
-    return  
-  }
+  // const getFullName = () => {
+  //   return  
+  // }
 
 
   const submitPlayer = async (e) => {
@@ -115,7 +126,16 @@ function App() {
       <Switch>
         <Route exact path ="/">
 
-    <h1>NBA Player Database</h1>
+        <Navbar bg="light" expand="lg">
+				
+              <Navbar.Brand className="mx-auto pl-5">NBA Player Database</Navbar.Brand>
+            <Form inline>
+              <FormControl type="text" placeholder="Search User" className="mr-sm-2" onChange={(e) => setSearch(e.target.value)}/>
+            </Form>
+    
+        
+        </Navbar>
+
 
     <form onSubmit={submitPlayer}>
     <label>First Name: </label>
@@ -136,54 +156,10 @@ function App() {
     </form>
     
     <PlayerList 
-      playerList={playerList}
+      playerList={filteredUsers}
       isLoading={isLoading}
       deletePlayer={deletePlayer}
     />
-
-  
-  {/* <Table striped bordered hover>
-    <thead>
-      <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Age</th>
-        <th>Height</th>
-        <th>Position</th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-
-       {isLoading === true ? <LoadingScreen/> :  
-      
-      playerList.map((player) => {
-        return (
-          <tr key={player.id}>
-       <td> {player.first_name}</td>
-        <td>{player.last_name}</td>
-        <td>{player.age}</td>
-        <td>{player.height}</td>
-        <td> {player.position}</td>
-        <td>
-          <Link variant="secondary" to={`/player/${player.id}`}>View</Link>
-        </td>
-        <td>
-        <Button variant="danger" onClick={() => {deletePlayer(player.id)}}>Delete</Button>
-        </td>
-        </tr>
-        );
-      })
-    
-      
-      
-        } 
-     
-       
-      
-    </tbody>
-    </Table> */}
 
 
     </Route>
