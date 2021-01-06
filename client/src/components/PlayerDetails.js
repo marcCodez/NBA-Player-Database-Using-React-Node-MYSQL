@@ -13,6 +13,8 @@ const [playerDetails, setPlayerDetails] = useState({
     img: ''
 });
 
+const [editMode, setEditMode] = useState(false)
+
 
 const {first_name, last_name, age, height, position, img} = playerDetails;
 
@@ -38,6 +40,38 @@ const loadPlayer = async () => {
 
 }
 
+ const changeEditMode = () => {
+    setEditMode(!editMode)
+}
+
+const renderEditView = () => {
+    return <div>
+         <Button variant="danger" onClick={changeEditMode}>X</Button>
+         <Button variant="success" onClick={changeEditMode}>✓</Button>
+         
+<Card  className="mx-auto mt-3" style={{ width: '25rem' }}>
+    <Card.Img variant="top" src={`../..${img}`} />
+    <ListGroup className="list-group-flush">
+      <ListGroupItem><span className="font-weight-bold">First Name: </span> <input type="text"/></ListGroupItem>
+      <ListGroupItem><span className="font-weight-bold">Last Name: </span><input type="text"/></ListGroupItem>
+      <ListGroupItem><span className="font-weight-bold">Age: </span><input type="text"/></ListGroupItem>
+    </ListGroup>
+  </Card>
+  </div>
+}
+
+const renderDefaultView = () => {
+return <div>
+<Card  className="mx-auto mt-3" style={{ width: '25rem' }}>
+    <Card.Img variant="top" src={`../..${img}`} />
+    <ListGroup className="list-group-flush">
+      <ListGroupItem><span className="font-weight-bold">First Name: </span>{first_name}</ListGroupItem>
+      <ListGroupItem><span className="font-weight-bold">Last Name: </span>{last_name}</ListGroupItem>
+      <ListGroupItem><span className="font-weight-bold">Age: </span>{age}</ListGroupItem>
+    </ListGroup>
+  </Card>
+  </div>
+}
 
 
     return (
@@ -49,18 +83,16 @@ const loadPlayer = async () => {
       </Link>
       <Navbar.Brand className="mx-auto pr-5">Player Profile</Navbar.Brand>
 	
-      <Button variant="danger" >Edit</Button>
+      <Button onClick={changeEditMode}>Edit</Button>
 			</Navbar>
 
+           
 
-      <Card  className="mx-auto mt-3" style={{ width: '25rem' }}>
-  <Card.Img variant="top" src={`../..${img}`} />
-  <ListGroup className="list-group-flush">
-    <ListGroupItem><span className="font-weight-bold">First Name: </span>{first_name}</ListGroupItem>
-    <ListGroupItem><span className="font-weight-bold">Last Name: </span>{last_name}</ListGroupItem>
-    <ListGroupItem><span className="font-weight-bold">Age: </span>{age}</ListGroupItem>
-  </ListGroup>
-</Card>
+{ editMode === true ? 
+renderEditView() :
+renderDefaultView()
+}
+
 
             
         </div>
