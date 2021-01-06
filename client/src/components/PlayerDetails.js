@@ -43,6 +43,14 @@ const loadPlayer = async () => {
     return (
         <div>
 
+<Navbar bg="light" expand="lg">
+      <Link className="btn btn-dark" to="/">
+        Back
+      </Link>
+      <Navbar.Brand className="mx-auto pr-5">Player Profile</Navbar.Brand>
+	
+      <Button variant="danger" >Edit</Button>
+			</Navbar>
 
 
       <Card  className="mx-auto mt-3" style={{ width: '25rem' }}>
