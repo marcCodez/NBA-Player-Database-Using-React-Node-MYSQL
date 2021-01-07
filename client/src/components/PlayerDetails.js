@@ -46,15 +46,15 @@ const loadPlayer = async () => {
 
 const renderEditView = () => {
     return <div>
-         <Button variant="danger" onClick={changeEditMode}>X</Button>
-         <Button variant="success" onClick={changeEditMode}>✓</Button>
+         <Button variant="danger" onClick={changeEditMode}>x Cancel</Button>
+         <Button variant="success" onClick={changeEditMode}>✓ Save Changes</Button>
          
 <Card  className="mx-auto mt-3" style={{ width: '25rem' }}>
     <Card.Img variant="top" src={`../..${img}`} />
     <ListGroup className="list-group-flush">
-      <ListGroupItem><span className="font-weight-bold">First Name: </span> <input type="text"/></ListGroupItem>
-      <ListGroupItem><span className="font-weight-bold">Last Name: </span><input type="text"/></ListGroupItem>
-      <ListGroupItem><span className="font-weight-bold">Age: </span><input type="text"/></ListGroupItem>
+      <ListGroupItem><span className="font-weight-bold">First Name: </span> <input placeholder={first_name} type="text"/></ListGroupItem>
+      <ListGroupItem><span className="font-weight-bold">Last Name: </span><input placeholder={last_name} type="text"/></ListGroupItem>
+      <ListGroupItem><span className="font-weight-bold">Age:   </span><input placeholder={age} type="text"/></ListGroupItem>
     </ListGroup>
   </Card>
   </div>
