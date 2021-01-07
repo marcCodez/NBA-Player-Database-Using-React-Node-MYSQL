@@ -63,11 +63,6 @@ app.post('/insert', (req, res) => {
    });
 });
 
-app.put('/update', () => {
-    const id = req.body.id
-    const sql = "UPDATE SET nba_players"
-    db.query()
-})
 
 app.delete('/delete/:id', (req, res) => {
     const id = req.params.id
@@ -83,12 +78,13 @@ app.delete('/delete/:id', (req, res) => {
 
 app.put('/update', (req, res) => {
     const id = req.body.id
-    const sql = "UPDATE SET nba_players WHERE id = ?"
-    db.query(sql, id, (err, result) => {
+    const { firstName, lastName, age } = req.body  
+    const sql = "UPDATE nba_players SET first_name = ?, last_name = ?, age = ?  WHERE id = ?"
+    db.query(sql, [firstName, lastName, age, id], (err, result) => {
         if (err) {
-            console.log(err)()
+            console.log(err);
         } else {
-           return res.send(result)
+           return res.send(result);
         }
     })
 })

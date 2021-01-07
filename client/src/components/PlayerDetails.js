@@ -12,6 +12,9 @@ const [playerDetails, setPlayerDetails] = useState({
     position: '',
     img: ''
 });
+const [newFirstName, setNewFirstName] = useState(0)
+const [newLastName, setNewLastName] = useState(0)
+const [newAge, setNewAge] = useState(0)
 
 const [editMode, setEditMode] = useState(false)
 
@@ -19,10 +22,11 @@ const [editMode, setEditMode] = useState(false)
 const {first_name, last_name, age, height, position, img} = playerDetails;
 
 
+
 const { id } = useParams();
 useEffect(() => {
     loadPlayer();
-}, []);
+}, [playerDetails]);
 
 const loadPlayer = async () => {
     const res = await axios.get(`http://localhost:3001/player/${id}`);
@@ -40,6 +44,20 @@ const loadPlayer = async () => {
 
 }
 
+const updatePlayer = (id) => {
+    axios
+    .put('http://localhost:3001/update', { firstName: newFirstName, lastName: newLastName, age: newAge, id: id })
+    .then((response) => {
+        setPlayerDetails({id: id, height: height, position: position, img: img, first_name: newFirstName, last_name: newLastName, age: newAge}
+        )
+        changeEditMode()
+    }
+    )
+}
+
+
+
+
  const changeEditMode = () => {
     setEditMode(!editMode)
 }
@@ -47,14 +65,14 @@ const loadPlayer = async () => {
 const renderEditView = () => {
     return <div>
          <Button variant="danger" onClick={changeEditMode}>x Cancel</Button>
-         <Button variant="success" onClick={changeEditMode}>✓ Save Changes</Button>
+         <Button variant="success" onClick={() => { updatePlayer(id)}}>✓ Save Changes</Button>
          
 <Card  className="mx-auto mt-3" style={{ width: '25rem' }}>
     <Card.Img variant="top" src={`../..${img}`} />
     <ListGroup className="list-group-flush">
-      <ListGroupItem><span className="font-weight-bold">First Name: </span> <input placeholder={first_name} type="text"/></ListGroupItem>
-      <ListGroupItem><span className="font-weight-bold">Last Name: </span><input placeholder={last_name} type="text"/></ListGroupItem>
-      <ListGroupItem><span className="font-weight-bold">Age:   </span><input placeholder={age} type="text"/></ListGroupItem>
+      <ListGroupItem><span className="font-weight-bold">First Name: </span> <input defaultValue={first_name} type="text"  onChange={(e) => {setNewFirstName(e.target.value)}}/></ListGroupItem>
+      <ListGroupItem><span className="font-weight-bold">Last Name: </span><input defaultValue={last_name} type="text"  onChange={(e) => {setNewLastName(e.target.value)}}/></ListGroupItem>
+      <ListGroupItem><span className="font-weight-bold">Age: </span><input defaultValue={age} type="number" onChange={(e) => {setNewAge(e.target.value)}}/></ListGroupItem>
     </ListGroup>
   </Card>
   </div>
@@ -72,6 +90,7 @@ return <div>
   </Card>
   </div>
 }
+
 
 
     return (
