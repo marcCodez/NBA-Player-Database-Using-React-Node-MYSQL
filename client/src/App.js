@@ -30,8 +30,8 @@ function App() {
     setTimeout(() => {
         setIsLoading(false)
     }, 1000);
-      fetchPlayers();
-  }, [])
+    fetchPlayers();
+  }, [playerList])
 
   
   const fetchPlayers = async () => {
@@ -58,8 +58,8 @@ function App() {
   }, [search, playerList])
 
 
-  const submitPlayer = async (e) => {
-    e.preventDefault();
+  const submitPlayer = async () => {
+    // e.preventDefault();
     // setIsLoading(true)
     const formData = new FormData();
     formData.append('file', file);
@@ -128,8 +128,7 @@ function App() {
             <Form inline>
               <FormControl type="text" placeholder="Search User" className="mr-sm-2" onChange={(e) => setSearch(e.target.value)}/>
             </Form>
-    
-        
+  
         </Navbar>
 
 
