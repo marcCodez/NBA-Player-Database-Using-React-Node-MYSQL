@@ -46,13 +46,18 @@ const loadPlayer = async () => {
 
 const updatePlayer = (id) => {
     axios
-    .put('http://localhost:3001/update', { firstName: newFirstName, lastName: newLastName, age: newAge, id: id })
+    .put('http://localhost:3001/update', { firstName: newFirstName ? newFirstName : first_name, lastName: newLastName ? newLastName : last_name, age: newAge ? newAge: age, id: id })
     .then((response) => {
-        setPlayerDetails({id: id, height: height, position: position, img: img, first_name: newFirstName, last_name: newLastName, age: newAge}
+        setPlayerDetails({id: id, height: height, position: position, img: img, first_name: newFirstName ? newFirstName : first_name, last_name: newLastName ? newLastName : last_name, age: newAge ? newAge: age}
         )
-        changeEditMode()
+        setEditMode(false)
+
     }
     )
+}
+
+const updateValue = (e) => {
+
 }
 
 
@@ -70,9 +75,9 @@ const renderEditView = () => {
 <Card  className="mx-auto mt-3" style={{ width: '25rem' }}>
     <Card.Img variant="top" src={`../..${img}`} />
     <ListGroup className="list-group-flush">
-      <ListGroupItem><span className="font-weight-bold">First Name: </span> <input defaultValue={first_name} type="text"  onChange={(e) => {setNewFirstName(e.target.value)}}/></ListGroupItem>
-      <ListGroupItem><span className="font-weight-bold">Last Name: </span><input defaultValue={last_name} type="text"  onChange={(e) => {setNewLastName(e.target.value)}}/></ListGroupItem>
-      <ListGroupItem><span className="font-weight-bold">Age: </span><input defaultValue={age} type="number" onChange={(e) => {setNewAge(e.target.value)}}/></ListGroupItem>
+      <ListGroupItem><span className="font-weight-bold">First Name: </span> <input defaultValue={first_name} type="text"  onChange={(e) => setNewFirstName(e.target.value)}/></ListGroupItem>
+      <ListGroupItem><span className="font-weight-bold">Last Name: </span><input defaultValue={last_name} type="text"  onChange={(e) => setNewLastName(e.target.value)}/></ListGroupItem>
+      <ListGroupItem><span className="font-weight-bold">Age: </span><input defaultValue={age} type="number" onChange={(e) =>  setNewAge(e.target.value)}/></ListGroupItem>
     </ListGroup>
   </Card>
   </div>
