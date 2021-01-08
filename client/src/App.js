@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Table, Button, Navbar, Form, FormControl} from 'react-bootstrap';
 import { Route, Link, BrowserRouter, Switch } from 'react-router-dom';
 import PlayerDetails from './components/PlayerDetails';
+import PlayerForm from './components/PlayerForm';
 
 import PlayerList from './components/PlayerList';
 
@@ -131,24 +132,18 @@ function App() {
   
         </Navbar>
 
+    <PlayerForm 
+      submitPlayer={submitPlayer}
+      setFirstName={setFirstName}
+      setLastName={setLastName}
+      setAge={setAge}
+      setHeight={setHeight}
+      setPosition={setPosition}
+      onChange={onChange}
+      fileName={fileName}
+    />
 
-    <form onSubmit={submitPlayer}>
-    <label>First Name: </label>
-    <input type="text" onChange={(e) => setFirstName(e.target.value)}/>
-    <label>Last Name: </label>
-    <input type="text" onChange={(e) => setLastName(e.target.value)}/>
-    <label>Age: </label>
-    <input type="number" onChange={(e) => setAge(e.target.value)}/>
-    <label>Height: </label>
-    <input type="number" onChange={(e) => setHeight(e.target.value)}/>
-    <label>Position:</label> 
-    <input type="text" onChange={(e) => setPosition(e.target.value)}/>
-    <div className="custom-file">
-  <input type="file" className="custom-file-input" id="customFile" onChange={onChange}/>
-  <label className="custom-file-label" htmlFor="customFile">{fileName}</label>
-</div>
-    <input type="submit" value="Submit"/>
-    </form>
+   
     
     <PlayerList 
       playerList={filteredUsers}
